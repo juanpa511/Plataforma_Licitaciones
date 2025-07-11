@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "titulo": "Construcción de Edificio Municipal",
+    "descripcion": "Proyecto de construcción de un edificio municipal de 3 pisos con oficinas administrativas y salas de reuniones.",
+    "monto": 1500000000,
+    "fecha_publicacion": "2024-01-15",
+    "fecha_cierre": "2024-03-15",
+    "region": "Metropolitana",
+    "categoria": "Construcción",
+    "estado": "Abierta",
+    "empresa_solicitante": "Municipalidad de Santiago",
+    "url_original": "https://www.mercadopublico.cl/licitacion/1"
+  },
+  {
+    "id": "2",
+    "titulo": "Mantenimiento de Carreteras Regionales",
+    "descripcion": "Servicios de mantenimiento y reparación de carreteras en la región de Valparaíso.",
+    "monto": 800000000,
+    "fecha_publicacion": "2024-01-10",
+    "fecha_cierre": "2024-02-28",
+    "region": "Valparaíso",
+    "categoria": "Infraestructura",
+    "estado": "Abierta",
+    "empresa_solicitante": "MOP Valparaíso",
+    "url_original": "https://www.mercadopublico.cl/licitacion/2"
+  },
+  {
+    "id": "3",
+    "titulo": "Sistema de Alumbrado Público LED",
+    "descripcion": "Instalación y mantenimiento de sistema de alumbrado público con tecnología LED en la comuna de Providencia.",
+    "monto": 450000000,
+    "fecha_publicacion": "2024-01-05",
+    "fecha_cierre": "2024-02-15",
+    "region": "Metropolitana",
+    "categoria": "Iluminación",
+    "estado": "Cerrada",
+    "empresa_solicitante": "Municipalidad de Providencia",
+    "url_original": "https://www.mercadopublico.cl/licitacion/3"
+  },
+  {
+    "id": "4",
+    "titulo": "Construcción de Centro Deportivo",
+    "descripcion": "Construcción de un centro deportivo municipal con piscina, gimnasio y canchas deportivas.",
+    "monto": 2200000000,
+    "fecha_publicacion": "2024-01-20",
+    "fecha_cierre": "2024-04-20",
+    "region": "Biobío",
+    "categoria": "Construcción",
+    "estado": "Abierta",
+    "empresa_solicitante": "Municipalidad de Concepción",
+    "url_original": "https://www.mercadopublico.cl/licitacion/4"
+  },
+  {
+    "id": "5",
+    "titulo": "Reposición de Red de Agua Potable",
+    "descripcion": "Reposición y mejoramiento de la red de agua potable en sectores rurales de la región de O'Higgins.",
+    "monto": 1200000000,
+    "fecha_publicacion": "2024-01-12",
+    "fecha_cierre": "2024-03-30",
+    "region": "O'Higgins",
+    "categoria": "Infraestructura",
+    "estado": "Abierta",
+    "empresa_solicitante": "Aguas del Valle",
+    "url_original": "https://www.mercadopublico.cl/licitacion/5"
+  }
+] 

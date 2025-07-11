@@ -1,0 +1,152 @@
+[
+  {
+    "id": "1",
+    "nombre": "Arica y Parinacota",
+    "codigo": "XV",
+    "capital": "Arica",
+    "coordenadas": {
+      "lat": -18.4783,
+      "lng": -70.3126
+    }
+  },
+  {
+    "id": "2",
+    "nombre": "Tarapacá",
+    "codigo": "I",
+    "capital": "Iquique",
+    "coordenadas": {
+      "lat": -20.2307,
+      "lng": -70.1351
+    }
+  },
+  {
+    "id": "3",
+    "nombre": "Antofagasta",
+    "codigo": "II",
+    "capital": "Antofagasta",
+    "coordenadas": {
+      "lat": -23.6509,
+      "lng": -70.3955
+    }
+  },
+  {
+    "id": "4",
+    "nombre": "Atacama",
+    "codigo": "III",
+    "capital": "Copiapó",
+    "coordenadas": {
+      "lat": -27.3668,
+      "lng": -70.3314
+    }
+  },
+  {
+    "id": "5",
+    "nombre": "Coquimbo",
+    "codigo": "IV",
+    "capital": "La Serena",
+    "coordenadas": {
+      "lat": -29.9045,
+      "lng": -71.2489
+    }
+  },
+  {
+    "id": "6",
+    "nombre": "Valparaíso",
+    "codigo": "V",
+    "capital": "Valparaíso",
+    "coordenadas": {
+      "lat": -33.0472,
+      "lng": -71.6127
+    }
+  },
+  {
+    "id": "7",
+    "nombre": "Metropolitana",
+    "codigo": "RM",
+    "capital": "Santiago",
+    "coordenadas": {
+      "lat": -33.4489,
+      "lng": -70.6693
+    }
+  },
+  {
+    "id": "8",
+    "nombre": "O'Higgins",
+    "codigo": "VI",
+    "capital": "Rancagua",
+    "coordenadas": {
+      "lat": -34.1708,
+      "lng": -70.7444
+    }
+  },
+  {
+    "id": "9",
+    "nombre": "Maule",
+    "codigo": "VII",
+    "capital": "Talca",
+    "coordenadas": {
+      "lat": -35.4264,
+      "lng": -71.6554
+    }
+  },
+  {
+    "id": "10",
+    "nombre": "Biobío",
+    "codigo": "VIII",
+    "capital": "Concepción",
+    "coordenadas": {
+      "lat": -36.8201,
+      "lng": -73.0444
+    }
+  },
+  {
+    "id": "11",
+    "nombre": "La Araucanía",
+    "codigo": "IX",
+    "capital": "Temuco",
+    "coordenadas": {
+      "lat": -38.7397,
+      "lng": -72.5984
+    }
+  },
+  {
+    "id": "12",
+    "nombre": "Los Ríos",
+    "codigo": "XIV",
+    "capital": "Valdivia",
+    "coordenadas": {
+      "lat": -39.8233,
+      "lng": -73.2459
+    }
+  },
+  {
+    "id": "13",
+    "nombre": "Los Lagos",
+    "codigo": "X",
+    "capital": "Puerto Montt",
+    "coordenadas": {
+      "lat": -41.4718,
+      "lng": -72.9366
+    }
+  },
+  {
+    "id": "14",
+    "nombre": "Aysén",
+    "codigo": "XI",
+    "capital": "Coyhaique",
+    "coordenadas": {
+      "lat": -45.5752,
+      "lng": -72.0662
+    }
+  },
+  {
+    "id": "15",
+    "nombre": "Magallanes",
+    "codigo": "XII",
+    "capital": "Punta Arenas",
+    "coordenadas": {
+      "lat": -53.1638,
+      "lng": -70.9171
+    }
+  }
+] 
