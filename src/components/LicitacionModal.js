@@ -49,18 +49,62 @@ export default function LicitacionModal({ licitacion, isOpen, onClose }) {
 
         {/* Content */}
         <div className="p-6">
+          {/* Información básica */}
+          <div className="bg-blue-50 p-4 rounded-lg mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Información Básica</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Título</h4>
+                <p className="text-gray-700">{licitacion.titulo || licitacion.nombre}</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Responsable</h4>
+                <p className="text-gray-700">{licitacion.responsable}</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Región</h4>
+                <p className="text-gray-700">{licitacion.region}</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Estado</h4>
+                <p className="text-gray-700">{licitacion.estado}</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Monto</h4>
+                <p className="text-gray-700 font-semibold">{licitacion.Monto || licitacion.monto}</p>
+              </div>
+              {daysUntilClose !== null && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Días hasta el cierre</h4>
+                  <p className={`font-semibold ${daysUntilClose <= 7 ? 'text-red-600' : daysUntilClose <= 30 ? 'text-yellow-600' : 'text-green-600'}`}>
+                    {daysUntilClose} días
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Descripción */}
           {licitacion.descripcion && (
-            <div className="bg-blue-50 p-4 rounded-lg mb-6">
+            <div className="bg-green-50 p-4 rounded-lg mb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Descripción</h3>
               <p className="text-gray-700 leading-relaxed">{licitacion.descripcion}</p>
             </div>
           )}
 
-          {/* Fechas adicionales */}
+          {/* Fechas importantes */}
           <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-            <h4 className="text-lg font-semibold text-gray-900 mb-4">Datos adicionales</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Calendar className="h-5 w-5 mr-2" />
+              Fechas Importantes
+            </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {licitacion.fechaPublicacion && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Fecha de Publicación:</span>
+                  <span className="font-medium">{licitacion.fechaPublicacion}</span>
+                </div>
+              )}
               {licitacion.fechaCierre && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">Fecha de Cierre:</span>
@@ -91,16 +135,28 @@ export default function LicitacionModal({ licitacion, isOpen, onClose }) {
                   <span className="font-medium">{licitacion.fechaAdjudicacion}</span>
                 </div>
               )}
-              {licitacion.fechaVisitaTerreno && (
+              {licitacion.fechaVisitaTerreno && licitacion.fechaVisitaTerreno !== 'N/A' && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">Visita a Terreno:</span>
                   <span className="font-medium">{licitacion.fechaVisitaTerreno}</span>
                 </div>
               )}
-              {licitacion.fechaExtracción && (
+              {licitacion.fechaExtraccion && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">Fecha Extracción:</span>
-                  <span className="font-medium">{licitacion.fechaExtracción}</span>
+                  <span className="font-medium">{licitacion.fechaExtraccion}</span>
+                </div>
+              )}
+              {licitacion.fecha_publicacion && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Fecha de Publicación:</span>
+                  <span className="font-medium">{licitacion.fecha_publicacion}</span>
+                </div>
+              )}
+              {licitacion.fecha_cierre && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Fecha de Cierre:</span>
+                  <span className="font-medium">{licitacion.fecha_cierre}</span>
                 </div>
               )}
             </div>
@@ -109,7 +165,10 @@ export default function LicitacionModal({ licitacion, isOpen, onClose }) {
           {/* Criterios de Evaluación */}
           {licitacion.criteriosEvaluacion && Array.isArray(licitacion.criteriosEvaluacion) && licitacion.criteriosEvaluacion.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Criterios de Evaluación</h4>
+              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <FileText className="h-5 w-5 mr-2" />
+                Criterios de Evaluación
+              </h4>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
@@ -131,28 +190,75 @@ export default function LicitacionModal({ licitacion, isOpen, onClose }) {
             </div>
           )}
 
+          {/* Información adicional */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+            <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Building className="h-5 w-5 mr-2" />
+              Información Adicional
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {licitacion.categoria && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Categoría:</span>
+                  <span className="font-medium">{licitacion.categoria}</span>
+                </div>
+              )}
+              {licitacion.organismo && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Organismo:</span>
+                  <span className="font-medium">{licitacion.organismo}</span>
+                </div>
+              )}
+              {licitacion.tipoCompra && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Tipo de Compra:</span>
+                  <span className="font-medium">{licitacion.tipoCompra}</span>
+                </div>
+              )}
+              {licitacion.empresa_solicitante && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Empresa Solicitante:</span>
+                  <span className="font-medium">{licitacion.empresa_solicitante}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Enlaces y adjuntos */}
           <div className="space-y-6">
             <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Enlaces y Documentos</h4>
+              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <ExternalLink className="h-5 w-5 mr-2" />
+                Enlaces y Documentos
+              </h4>
               <div className="space-y-3">
                 {licitacion.urlLicitacion && (
                   <a href={licitacion.urlLicitacion} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 p-3 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">
+                    <ExternalLink className="h-4 w-4" />
                     <span>Ver Licitación Original</span>
                   </a>
                 )}
                 {licitacion.urlAdjuntos && (
                   <a href={licitacion.urlAdjuntos} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-purple-600 hover:text-purple-800 p-3 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors">
+                    <Paperclip className="h-4 w-4" />
                     <span>Ver Adjuntos</span>
+                  </a>
+                )}
+                {licitacion.linkAdjuntos && (
+                  <a href={licitacion.linkAdjuntos} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-purple-600 hover:text-purple-800 p-3 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors">
+                    <Paperclip className="h-4 w-4" />
+                    <span>Ver Adjuntos (Alternativo)</span>
                   </a>
                 )}
                 {licitacion.url_original && (
                   <a href={licitacion.url_original} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-green-600 hover:text-green-800 p-3 border border-green-200 rounded-lg hover:bg-green-50 transition-colors">
+                    <ExternalLink className="h-4 w-4" />
                     <span>Mercado Público</span>
                   </a>
                 )}
                 {licitacion.link && (
                   <a href={licitacion.link} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-800 p-3 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors">
+                    <ExternalLink className="h-4 w-4" />
                     <span>Enlace Externo</span>
                   </a>
                 )}
