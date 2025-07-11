@@ -389,8 +389,8 @@ export default function DashboardPage() {
             </div>
           </div>
         </aside>
-        {/* Contenido principal centrado y compacto */}
-        <main className="flex-1 max-w-4xl mx-auto px-2 sm:px-4">
+        {/* Contenido principal ocupa todo el espacio disponible */}
+        <main className="flex-1 px-2 sm:px-4">
           {/* Estadísticas de resultados */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
             <div className="flex items-center justify-between">
@@ -424,7 +424,7 @@ export default function DashboardPage() {
 
           {/* Tabla de licitaciones */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <table className="w-full min-w-full divide-y divide-gray-200 text-sm">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Licitación</th>
