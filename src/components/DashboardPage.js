@@ -296,9 +296,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Layout principal: */}
-      <div className="w-full flex flex-row items-start">
+      <div className="w-full flex flex-row items-start max-w-7xl mx-auto px-2 md:px-4 lg:px-8">
         {/* Panel de filtros pegado a la izquierda, compacto y con borde derecho */}
-        <aside className="min-w-[220px] max-w-xs w-full lg:w-60 bg-white border-r border-gray-200 h-full p-4">
+        <aside className="min-w-[180px] max-w-xs w-full lg:w-56 bg-white border-r border-gray-200 h-full p-2 md:p-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Filtros</h2>
             <button
@@ -390,7 +390,7 @@ export default function DashboardPage() {
           </div>
         </aside>
         {/* Contenido principal sin margen izquierdo, ocupa todo el espacio */}
-        <main className="flex-1 px-4">
+        <main className="flex-1 px-1 md:px-4">
           {/* Estadísticas de resultados */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
             <div className="flex items-center justify-between">
@@ -423,30 +423,29 @@ export default function DashboardPage() {
           </div>
 
           {/* Tabla de licitaciones */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+            <table className="min-w-full max-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                       Licitación
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Título
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Monto
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Región
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Estado
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Fecha Publicación
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Acciones
                     </th>
                   </tr>
@@ -454,7 +453,7 @@ export default function DashboardPage() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {licitaciones.map((licitacion) => (
                     <tr key={licitacion.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
+                      <td className="px-2 py-2 align-top">
                         <div>
                           <h4 className="text-sm font-medium text-gray-900 mb-1">
                             {licitacion.nombre}
@@ -464,18 +463,18 @@ export default function DashboardPage() {
                           </p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-2 py-2 whitespace-nowrap align-top">
                         <span className="text-sm text-gray-900">{licitacion.titulo}</span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-2 py-2 whitespace-nowrap align-top">
                         <span className="text-sm font-semibold text-gray-900">
                           {licitacion.Monto || 'No disponible'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-2 py-2 whitespace-nowrap align-top">
                         <span className="text-sm text-gray-900">{licitacion.region}</span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-2 py-2 whitespace-nowrap align-top">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                           licitacion.estado?.toLowerCase().includes('abierta') 
                             ? 'bg-green-100 text-green-800'
@@ -486,10 +485,10 @@ export default function DashboardPage() {
                           {licitacion.estado}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900 align-top">
                         {formatDate(licitacion.fechaPublicacion)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <td className="px-2 py-2 whitespace-nowrap text-xs align-top">
                         <div className="flex space-x-2">
                           <button
                             onClick={() => openModal(licitacion)}
