@@ -296,9 +296,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Layout principal: */}
-      <div className="w-full flex flex-row items-start justify-center">
+      <div className="w-full min-h-screen flex flex-row items-start">
         {/* Panel de filtros pegado a la izquierda, compacto y con borde derecho */}
-        <aside className="min-w-[180px] max-w-xs w-full lg:w-56 bg-white border-r border-gray-200 h-full p-2 sm:p-4">
+        <aside className="min-w-[220px] max-w-xs w-full bg-white border-r border-gray-200 h-full p-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Filtros</h2>
             <button
