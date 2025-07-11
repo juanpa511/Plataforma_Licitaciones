@@ -244,7 +244,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-2 sm:px-4 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
@@ -296,9 +296,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Layout principal: */}
-      <div className="w-full min-h-screen flex flex-row items-start">
+      <div className="w-full flex flex-row items-start">
         {/* Panel de filtros pegado a la izquierda, compacto y con borde derecho */}
-        <aside className="min-w-[220px] max-w-xs w-full bg-white border-r border-gray-200 h-full p-4">
+        <aside className="min-w-[220px] max-w-xs w-full lg:w-60 bg-white border-r border-gray-200 h-full p-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900">Filtros</h2>
             <button
@@ -389,10 +389,10 @@ export default function DashboardPage() {
             </div>
           </div>
         </aside>
-        {/* Contenido principal ocupa todo el espacio disponible */}
-        <main className="flex-1 px-2 sm:px-4">
+        {/* Contenido principal sin margen izquierdo, ocupa todo el espacio */}
+        <main className="flex-1 px-4">
           {/* Estadísticas de resultados */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
@@ -423,95 +423,118 @@ export default function DashboardPage() {
           </div>
 
           {/* Tabla de licitaciones */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
-            <table className="w-full min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Licitación</th>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Región</th>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Publicación</th>
-                  <th className="px-2 sm:px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {licitaciones.map((licitacion) => (
-                  <tr key={licitacion.id} className="hover:bg-gray-50">
-                    <td className="px-2 sm:px-4 py-2">
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">{licitacion.nombre}</h4>
-                        <p className="text-[10px] sm:text-xs text-gray-500">ID: {licitacion.id}</p>
-                      </div>
-                    </td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
-                      <span className="text-xs sm:text-sm text-gray-900">{licitacion.titulo}</span>
-                    </td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
-                      <span className="text-xs sm:text-sm font-semibold text-gray-900">{licitacion.Monto || 'No disponible'}</span>
-                    </td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
-                      <span className="text-xs sm:text-sm text-gray-900">{licitacion.region}</span>
-                    </td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-[10px] sm:text-xs font-semibold rounded-full ${
-                        licitacion.estado?.toLowerCase().includes('abierta')
-                          ? 'bg-green-100 text-green-800'
-                          : licitacion.estado?.toLowerCase().includes('cerrada')
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {licitacion.estado}
-                      </span>
-                    </td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-sm text-gray-900">
-                      {formatDate(licitacion.fechaPublicacion)}
-                    </td>
-                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-sm">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => openModal(licitacion)}
-                          className="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-800"
-                          title="Ver detalles"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        {licitacion.link && (
-                          <a
-                            href={licitacion.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center space-x-1 text-green-600 hover:text-green-800"
-                            title="Ver en Mercado Público"
-                          >
-                            <LinkIcon className="h-4 w-4" />
-                          </a>
-                        )}
-                        {isValidAttachmentLink(licitacion.linkAdjuntos) ? (
-                          <a
-                            href={licitacion.linkAdjuntos}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center space-x-1 text-purple-600 hover:text-purple-800"
-                            title="Ver adjuntos"
-                          >
-                            <Paperclip className="h-4 w-4" />
-                          </a>
-                        ) : (
-                          <span
-                            className="inline-flex items-center space-x-1 text-gray-400 cursor-not-allowed"
-                            title="Adjuntos no disponibles"
-                          >
-                            <Paperclip className="h-4 w-4" />
-                          </span>
-                        )}
-                      </div>
-                    </td>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Licitación
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Título
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Monto
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Región
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Estado
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Fecha Publicación
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Acciones
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {licitaciones.map((licitacion) => (
+                    <tr key={licitacion.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-900 mb-1">
+                            {licitacion.nombre}
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            ID: {licitacion.id}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm text-gray-900">{licitacion.titulo}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-semibold text-gray-900">
+                          {licitacion.Monto || 'No disponible'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm text-gray-900">{licitacion.region}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          licitacion.estado?.toLowerCase().includes('abierta') 
+                            ? 'bg-green-100 text-green-800'
+                            : licitacion.estado?.toLowerCase().includes('cerrada')
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {licitacion.estado}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {formatDate(licitacion.fechaPublicacion)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => openModal(licitacion)}
+                            className="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-800"
+                            title="Ver detalles"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          {licitacion.link && (
+                            <a
+                              href={licitacion.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center space-x-1 text-green-600 hover:text-green-800"
+                              title="Ver en Mercado Público"
+                            >
+                              <LinkIcon className="h-4 w-4" />
+                            </a>
+                          )}
+                          {isValidAttachmentLink(licitacion.linkAdjuntos) ? (
+                            <a
+                              href={licitacion.linkAdjuntos}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center space-x-1 text-purple-600 hover:text-purple-800"
+                              title="Ver adjuntos"
+                            >
+                              <Paperclip className="h-4 w-4" />
+                            </a>
+                          ) : (
+                            <span
+                              className="inline-flex items-center space-x-1 text-gray-400 cursor-not-allowed"
+                              title="Adjuntos no disponibles"
+                            >
+                              <Paperclip className="h-4 w-4" />
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
             {/* Paginación: */}
             {totalPagesCalculated > 1 && (
               <div className="flex justify-end mt-4">
