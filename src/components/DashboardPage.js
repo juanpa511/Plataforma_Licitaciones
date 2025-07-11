@@ -613,9 +613,8 @@ export default function DashboardPage() {
                 </div>
               </div>
             )}
-          </div> {/* <-- cierre correcto del div de la tabla */}
-        </main>
-      </div> {/* <-- cierre correcto del layout principal */}
+          </main>
+        </div> {/* <-- cierre correcto del layout principal */}
 
       {/* Modal de detalles */}
       <LicitacionModal
