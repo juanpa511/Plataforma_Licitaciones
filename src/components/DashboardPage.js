@@ -31,6 +31,10 @@ export default function DashboardPage() {
   const [selectedEstado, setSelectedEstado] = useState('');
   const [fechaDesde, setFechaDesde] = useState('');
   const [fechaHasta, setFechaHasta] = useState('');
+  const [fechaCierreDesde, setFechaCierreDesde] = useState('');
+  const [fechaCierreHasta, setFechaCierreHasta] = useState('');
+  const [fechaAdjudicacionDesde, setFechaAdjudicacionDesde] = useState('');
+  const [fechaAdjudicacionHasta, setFechaAdjudicacionHasta] = useState('');
   
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,6 +66,10 @@ export default function DashboardPage() {
         estado: selectedEstado || undefined,
         fechaInicio: fechaDesde || undefined,
         fechaFin: fechaHasta || undefined,
+        fechaCierreInicio: fechaCierreDesde || undefined,
+        fechaCierreFin: fechaCierreHasta || undefined,
+        fechaAdjudicacionInicio: fechaAdjudicacionDesde || undefined,
+        fechaAdjudicacionFin: fechaAdjudicacionHasta || undefined,
         page: currentPage,
         limit: itemsPerPage,
         search: searchTerm || undefined
@@ -94,7 +102,7 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, [selectedRegion, selectedEstado, fechaDesde, fechaHasta, currentPage, itemsPerPage, searchTerm]);
+  }, [selectedRegion, selectedEstado, fechaDesde, fechaHasta, fechaCierreDesde, fechaCierreHasta, fechaAdjudicacionDesde, fechaAdjudicacionHasta, currentPage, itemsPerPage, searchTerm]);
 
   useEffect(() => {
     loadData();
@@ -110,6 +118,8 @@ export default function DashboardPage() {
     const porRegion = {};
     const porEstado = {};
     let licitacionesAbiertas = 0;
+    let licitacionesUrgentes = 0;
+    let licitacionesAdvertencia = 0;
     
     licitaciones.forEach(lic => {
       if (lic.region) {
@@ -121,11 +131,23 @@ export default function DashboardPage() {
           licitacionesAbiertas++;
         }
       }
+      
+      // Contar licitaciones próximas a cerrar
+      const daysUntilClose = getDaysUntilClose(lic.fechaCierre || lic.fecha_cierre);
+      if (daysUntilClose !== null && daysUntilClose >= 0) {
+        if (daysUntilClose <= 7) {
+          licitacionesUrgentes++;
+        } else if (daysUntilClose <= 30) {
+          licitacionesAdvertencia++;
+        }
+      }
     });
     
     return {
       totalLicitaciones: licitaciones.length,
       licitacionesAbiertas,
+      licitacionesUrgentes,
+      licitacionesAdvertencia,
       porRegion,
       porEstado,
       fechaUltimaActualizacion: new Date().toISOString()
@@ -159,6 +181,19 @@ export default function DashboardPage() {
     }
   };
 
+  const getDaysUntilClose = (fechaCierre) => {
+    if (!fechaCierre || fechaCierre === 'N/A' || fechaCierre === 'No disponible') return null;
+    try {
+      const today = new Date();
+      const closeDate = new Date(fechaCierre);
+      const diffTime = closeDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
+    } catch {
+      return null;
+    }
+  };
+
   const clearFilters = () => {
     setSearchTerm('');
     setSearchInput('');
@@ -166,6 +201,10 @@ export default function DashboardPage() {
     setSelectedEstado('');
     setFechaDesde('');
     setFechaHasta('');
+    setFechaCierreDesde('');
+    setFechaCierreHasta('');
+    setFechaAdjudicacionDesde('');
+    setFechaAdjudicacionHasta('');
     setCurrentPage(1);
   };
 
@@ -200,6 +239,8 @@ export default function DashboardPage() {
     Región: lic.region,
     Estado: lic.estado,
     'Fecha Publicación': lic.fechaPublicacion,
+    'Fecha Cierre': lic.fechaCierre || lic.fecha_cierre,
+    'Fecha Adjudicación': lic.fechaAdjudicacion || lic.fecha_adjudicacion,
     'URL Licitación': lic.urlLicitacion,
     'URL Adjuntos': lic.urlAdjuntos
   }));
@@ -259,6 +300,26 @@ export default function DashboardPage() {
                 <p className="text-sm text-green-600 mt-1">
                   ✅ Conectado a API Gateway
                 </p>
+              )}
+              {(estadisticasLocales.licitacionesUrgentes > 0 || estadisticasLocales.licitacionesAdvertencia > 0) && (
+                <div className="flex items-center space-x-4 mt-2">
+                  {estadisticasLocales.licitacionesUrgentes > 0 && (
+                    <div className="flex items-center space-x-1">
+                      <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm font-medium text-red-700">
+                        {estadisticasLocales.licitacionesUrgentes} urgente{estadisticasLocales.licitacionesUrgentes > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                  )}
+                  {estadisticasLocales.licitacionesAdvertencia > 0 && (
+                    <div className="flex items-center space-x-1">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <span className="text-sm font-medium text-yellow-700">
+                        {estadisticasLocales.licitacionesAdvertencia} advertencia{estadisticasLocales.licitacionesAdvertencia > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
             
@@ -367,22 +428,70 @@ export default function DashboardPage() {
               </select>
             </div>
 
-            {/* Fechas */}
+            {/* Fechas de Publicación */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Fechas
+                Fecha Publicación
               </label>
               <div className="space-y-2">
                 <input
                   type="date"
                   value={fechaDesde}
                   onChange={(e) => { setFechaDesde(e.target.value); setCurrentPage(1); }}
+                  placeholder="Desde"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <input
                   type="date"
                   value={fechaHasta}
                   onChange={(e) => { setFechaHasta(e.target.value); setCurrentPage(1); }}
+                  placeholder="Hasta"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Fechas de Cierre */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Fecha Cierre
+              </label>
+              <div className="space-y-2">
+                <input
+                  type="date"
+                  value={fechaCierreDesde}
+                  onChange={(e) => { setFechaCierreDesde(e.target.value); setCurrentPage(1); }}
+                  placeholder="Desde"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="date"
+                  value={fechaCierreHasta}
+                  onChange={(e) => { setFechaCierreHasta(e.target.value); setCurrentPage(1); }}
+                  placeholder="Hasta"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Fechas de Adjudicación */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Fecha Adjudicación
+              </label>
+              <div className="space-y-2">
+                <input
+                  type="date"
+                  value={fechaAdjudicacionDesde}
+                  onChange={(e) => { setFechaAdjudicacionDesde(e.target.value); setCurrentPage(1); }}
+                  placeholder="Desde"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="date"
+                  value={fechaAdjudicacionHasta}
+                  onChange={(e) => { setFechaAdjudicacionHasta(e.target.value); setCurrentPage(1); }}
+                  placeholder="Hasta"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -414,6 +523,8 @@ export default function DashboardPage() {
                   className="px-3 py-1 border border-gray-300 rounded-lg text-sm"
                 >
                   <option value="fechaPublicacion">Fecha Publicación</option>
+                  <option value="fechaCierre">Fecha Cierre</option>
+                  <option value="fechaAdjudicacion">Fecha Adjudicación</option>
                   <option value="nombre">Nombre</option>
                   <option value="Monto">Monto</option>
                   <option value="region">Región</option>
@@ -424,6 +535,23 @@ export default function DashboardPage() {
 
           {/* Tabla de licitaciones */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+            {/* Leyenda de colores */}
+            <div className="p-4 border-b border-gray-200 bg-gray-50">
+              <div className="flex items-center space-x-6 text-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 bg-red-50 border-l-4 border-red-400"></div>
+                  <span className="text-gray-700">≤ 7 días para cerrar</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 bg-yellow-50 border-l-4 border-yellow-400"></div>
+                  <span className="text-gray-700">≤ 30 días para cerrar</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 bg-white border-l-4 border-transparent"></div>
+                  <span className="text-gray-700">Normal</span>
+                </div>
+              </div>
+            </div>
             <table className="min-w-full max-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-gray-50">
                   <tr>
@@ -446,13 +574,27 @@ export default function DashboardPage() {
                       Fecha Publicación
                     </th>
                     <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Fecha Cierre
+                    </th>
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Fecha Adjudicación
+                    </th>
+                    <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Acciones
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {licitaciones.map((licitacion) => (
-                    <tr key={licitacion.id} className="hover:bg-gray-50">
+                  {licitaciones.map((licitacion) => {
+                    const daysUntilClose = getDaysUntilClose(licitacion.fechaCierre || licitacion.fecha_cierre);
+                    const isUrgent = daysUntilClose !== null && daysUntilClose <= 7 && daysUntilClose >= 0;
+                    const isWarning = daysUntilClose !== null && daysUntilClose <= 30 && daysUntilClose > 7;
+                    
+                    return (
+                      <tr key={licitacion.id} className={`hover:bg-gray-50 ${
+                        isUrgent ? 'bg-red-50 border-l-4 border-red-400' :
+                        isWarning ? 'bg-yellow-50 border-l-4 border-yellow-400' : ''
+                      }`}>
                       <td className="px-2 py-2 align-top">
                         <div>
                           <h4 className="text-sm font-medium text-gray-900 mb-1">
@@ -487,6 +629,33 @@ export default function DashboardPage() {
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900 align-top">
                         {formatDate(licitacion.fechaPublicacion)}
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900 align-top">
+                        <div>
+                          <div>{formatDate(licitacion.fechaCierre || licitacion.fecha_cierre)}</div>
+                          {(() => {
+                            const daysUntilClose = getDaysUntilClose(licitacion.fechaCierre || licitacion.fecha_cierre);
+                            if (daysUntilClose !== null) {
+                              const isUrgent = daysUntilClose <= 7;
+                              const isWarning = daysUntilClose <= 30 && daysUntilClose > 7;
+                              return (
+                                <div className={`text-xs font-medium ${
+                                  isUrgent ? 'text-red-600' : 
+                                  isWarning ? 'text-yellow-600' : 
+                                  'text-green-600'
+                                }`}>
+                                  {daysUntilClose > 0 ? `${daysUntilClose} días` : 
+                                   daysUntilClose === 0 ? 'Hoy' : 
+                                   `${Math.abs(daysUntilClose)} días vencida`}
+                                </div>
+                              );
+                            }
+                            return null;
+                          })()}
+                        </div>
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900 align-top">
+                        {formatDate(licitacion.fechaAdjudicacion || licitacion.fecha_adjudicacion)}
                       </td>
                       <td className="px-2 py-2 whitespace-nowrap text-xs align-top">
                         <div className="flex space-x-2">
@@ -529,7 +698,8 @@ export default function DashboardPage() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  );
+                  })}
                 </tbody>
               </table>
             </div>
