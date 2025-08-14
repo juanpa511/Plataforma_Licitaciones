@@ -109,23 +109,50 @@ export default function DashboardPage() {
   }, [loadData]);
 
   const formatDate = (dateString) => {
-    if (!dateString || dateString === 'N/A' || dateString === 'No disponible') return 'No disponible';
+    if (!dateString || dateString === 'N/A' || dateString === 'No disponible' || dateString === null) {
+      return 'No disponible';
+    }
+    
     try {
-      return new Date(dateString).toLocaleDateString('es-CL');
-    } catch {
-      return dateString;
+      const date = new Date(dateString);
+      
+      // Verificar si la fecha es válida
+      if (isNaN(date.getTime())) {
+        return 'No disponible';
+      }
+      
+      return date.toLocaleDateString('es-CL');
+    } catch (error) {
+      console.warn('Error formateando fecha:', dateString, error);
+      return 'No disponible';
     }
   };
 
   const getDaysUntilClose = (fechaCierre) => {
-    if (!fechaCierre || fechaCierre === 'N/A' || fechaCierre === 'No disponible') return null;
+    if (!fechaCierre || fechaCierre === 'N/A' || fechaCierre === 'No disponible' || fechaCierre === null) {
+      return null;
+    }
+    
     try {
       const today = new Date();
       const closeDate = new Date(fechaCierre);
+      
+      // Verificar si la fecha es válida
+      if (isNaN(closeDate.getTime())) {
+        return null;
+      }
+      
       const diffTime = closeDate - today;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      // Verificar que el resultado sea un número válido
+      if (isNaN(diffDays)) {
+        return null;
+      }
+      
       return diffDays;
-    } catch {
+    } catch (error) {
+      console.warn('Error calculando días hasta cierre:', fechaCierre, error);
       return null;
     }
   };
