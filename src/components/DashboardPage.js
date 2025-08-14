@@ -108,6 +108,28 @@ export default function DashboardPage() {
     loadData();
   }, [loadData]);
 
+  const formatDate = (dateString) => {
+    if (!dateString || dateString === 'N/A' || dateString === 'No disponible') return 'No disponible';
+    try {
+      return new Date(dateString).toLocaleDateString('es-CL');
+    } catch {
+      return dateString;
+    }
+  };
+
+  const getDaysUntilClose = (fechaCierre) => {
+    if (!fechaCierre || fechaCierre === 'N/A' || fechaCierre === 'No disponible') return null;
+    try {
+      const today = new Date();
+      const closeDate = new Date(fechaCierre);
+      const diffTime = closeDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
+    } catch {
+      return null;
+    }
+  };
+
   // Calcular estadísticas locales si no hay del servidor
   const estadisticasLocales = useMemo(() => {
     if (Object.keys(estadisticas).length > 0) {
@@ -171,28 +193,6 @@ export default function DashboardPage() {
 
   // Calcular paginación
   const totalPagesCalculated = Math.max(1, Math.ceil(totalLicitaciones / itemsPerPage));
-
-  const formatDate = (dateString) => {
-    if (!dateString || dateString === 'N/A' || dateString === 'No disponible') return 'No disponible';
-    try {
-      return new Date(dateString).toLocaleDateString('es-CL');
-    } catch {
-      return dateString;
-    }
-  };
-
-  const getDaysUntilClose = (fechaCierre) => {
-    if (!fechaCierre || fechaCierre === 'N/A' || fechaCierre === 'No disponible') return null;
-    try {
-      const today = new Date();
-      const closeDate = new Date(fechaCierre);
-      const diffTime = closeDate - today;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays;
-    } catch {
-      return null;
-    }
-  };
 
   const clearFilters = () => {
     setSearchTerm('');
